@@ -2,32 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Order = require('../models/Order');
 
-// Thêm đơn hàng
-router.post('/', async (req, res) => {
-  const { productId, name, price, image, quantity, userName, userPhone } = req.body;
 
-  if (!productId || !userName || !userPhone) {
-    return res.status(400).json({ message: 'Thiếu thông tin đơn hàng hoặc người dùng.' });
-  }
-
-  const newOrder = new Order({
-    productId,
-    name,
-    price,
-    image,
-    quantity,
-    userName,
-    userPhone,
-    confirmed: false
-  });
-
-  try {
-    await newOrder.save();
-    res.json({ message: 'Đã thêm vào giỏ hàng!' });
-  } catch (err) {
-    res.status(500).json({ message: 'Lỗi khi thêm đơn hàng.', error: err });
-  }
-});
 
 // Xem giỏ hàng của người dùng
 router.get('/', async (req, res) => {
