@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const path = require('path'); // ✅ BỔ SUNG DÒNG NÀY
+const path = require('path');
 require('dotenv').config();
 
 const productRoutes = require('./routes/products');
@@ -22,23 +22,21 @@ app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
 
+// Serve static frontend
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Route fallback
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// ✅ Luôn bật server, tránh Render bị timeout
+app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
+
 // Kết nối MongoDB
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/shopbanquanao', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
-.then(() => {
-  console.log('✅ MongoDB connected');
-
-  // Serve static frontend
-  app.use(express.static(path.join(__dirname, 'public')));
-
-  // Route fallback: chuyển tất cả route khác về index.html
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-  });
-
-  // ✅ Lưu ý: Đặt listen() sau fallback
-  app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
-})
+.then(() => console.log('✅ MongoDB connected'))
 .catch(err => console.error('❌ MongoDB error:', err));
