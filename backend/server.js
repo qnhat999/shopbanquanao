@@ -22,21 +22,25 @@ app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
 
 // Kết nối MongoDB
+
+
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/shopbanquanao', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
 .then(() => {
   console.log('✅ MongoDB connected');
+
+  // Serve static frontend
+  app.use(express.static(path.join(__dirname, 'public')));
+
+  // Route fallback: chuyển tất cả route khác về index.html
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  });
+
+  // ✅ Lưu ý: Đặt listen() sau fallback
   app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
 })
 .catch(err => console.error('❌ MongoDB error:', err));
-const path = require('path');
 
-// Serve static frontend
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Route fallback: chuyển tất cả route khác về index.html
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
