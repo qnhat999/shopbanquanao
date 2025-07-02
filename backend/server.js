@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path'); // ✅ BỔ SUNG DÒNG NÀY
 require('dotenv').config();
 
 const productRoutes = require('./routes/products');
@@ -22,8 +23,6 @@ app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
 
 // Kết nối MongoDB
-
-
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/shopbanquanao', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -43,4 +42,3 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/shopbanqu
   app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
 })
 .catch(err => console.error('❌ MongoDB error:', err));
-
