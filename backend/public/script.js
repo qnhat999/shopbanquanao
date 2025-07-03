@@ -16,12 +16,12 @@ else if (path.includes('khuyenmai.html')) type = 'sale';
 if (type) loadProducts();
 if (path.includes('cart.html')) loadCart();
 if (path.includes('login.html')) setupLogin();
-if (path.includes('index.html')) {
+if (path === '/' || path.includes('index.html')) {
   loadTypeProducts('new', 'products-new');
   loadTypeProducts('best', 'products-best');
   loadTypeProducts('sale', 'products-sale');
-  loadTypeProducts('fashion', 'products-fashion');
 }
+
 
 // ============== TÌM KIẾM SẢN PHẨM ===================
 async function searchProducts() {
