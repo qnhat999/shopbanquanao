@@ -1,8 +1,12 @@
 const isLocal = window.location.hostname === 'localhost';
-const BASE_URL = isLocal ? 'http://localhost:5500' : 'https://shopbanquanao-z6qm.onrender.com';
+const BASE_URL = isLocal
+  ? 'http://localhost:5000'  // ⚠️ Port backend local của bạn (nếu khác thì sửa lại)
+  : 'https://shopbanquanao-z6qm.onrender.com'; // ✅ Link backend Render của bạn
+
 const API_URL = `${BASE_URL}/api/products`;
 const ORDER_API = `${BASE_URL}/api/orders`;
 const IMAGE_BASE = `${BASE_URL}/images`;
+
 
 
 const path = window.location.pathname;
