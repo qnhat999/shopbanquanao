@@ -23,8 +23,8 @@ router.get("/search", async (req, res) => {
     const keyword = removeVietnameseTones(q.toLowerCase());
 
     const products = await Product.find()
-      .select("name price image type category") // ✅ chỉ lấy field cần
-      .lean(); // ✅ nhanh hơn
+      .select("name price image type category")
+      .lean();
 
     const result = products
       .map(p => {
@@ -41,8 +41,41 @@ router.get("/search", async (req, res) => {
       .sort((a, b) => b.score - a.score);
 
     res.json(result);
-  } catch (err) {
+  } catch {
     res.status(500).json({ error: "Search error" });
+  }
+});
+
+/* ===============================
+   🤖 AI SEARCH BY LABEL (🔥 MỚI)
+================================ */
+router.get("/ai-search", async (req, res) => {
+  try {
+    const label = req.query.label;
+    if (!label) return res.json([]);
+
+    const keyword = removeVietnameseTones(label.toLowerCase());
+
+    const products = await Product.find()
+      .select("name price image category")
+      .lean();
+
+    const result = products.filter(p => {
+      const name = removeVietnameseTones(p.name.toLowerCase());
+      const category = removeVietnameseTones(
+        (p.category || "").toLowerCase()
+      );
+
+      return (
+        name.includes(keyword) ||
+        category.includes(keyword) ||
+        keyword.includes(name)
+      );
+    });
+
+    res.json(result.slice(0, 4)); // tối đa 4 sp
+  } catch {
+    res.status(500).json({ error: "AI search error" });
   }
 });
 
@@ -70,7 +103,7 @@ router.get("/", async (req, res) => {
 });
 
 /* ===============================
-   🤖 AI GỢI Ý SẢN PHẨM
+   🤖 AI GỢI Ý THEO ID
 ================================ */
 router.get("/recommend/:id", async (req, res) => {
   try {

@@ -10,7 +10,7 @@ module.exports = {
     category: "aokhoac"
   },
   "jacket": {
-    vi: "ÁO KHOÁC JEAN",
+    vi: "ÁO KHOÁC",
     category: "aokhoac"
   },
   "bomber jacket": {
@@ -32,54 +32,46 @@ module.exports = {
     category: "aolen"
   },
   "knit sweater": {
-    vi: "ÁO LEN NỮ RỘNG",
-    category: "aolen"
-  },
-  "knit sweater": {
-    vi: "ÁO LEN RỘNG",
+    vi: "ÁO LEN",
     category: "aolen"
   },
   "knitwear": {
-    vi: "ÁO LEN NỮ FORM RỘNG",
+    vi: "ÁO LEN",
     category: "aolen"
   },
   "pullover": {
     vi: "ÁO LEN ÔM DÁNG",
     category: "aolen"
   },
-  "pullover": {
-    vi: "ÁO LEN NỮ ÔM DÁNG",
+  "turtleneck": {
+    vi: "ÁO NAM CỔ LỌ NÂU",
     category: "aolen"
   },
 
   // ================== ÁO THUN ==================
-  "trench coat": {
-    vi: "ÁO THUN CỔ BẺ",
+  "t-shirt": {
+    vi: "ÁO THUN NAM COTTON",
     category: "aothun"
   },
   "cotton t-shirt": {
     vi: "ÁO THUN COTTON",
     category: "aothun"
   },
-  "t-shirt": {
-    vi: "ÁO THUN NAM COTTON",
-    category: "aothun"
-  },
-  "suit": {
-    vi: "ÁO SWEATER",
+  "trench coat": {
+    vi: "ÁO THUN CỔ BẺ",
     category: "aothun"
   },
 
   // ================== ÁO POLO ==================
-  "military uniform": {
-    vi: "ÁO POLO CỔ BẺ",
-    category: "aopolo"
-  },
   "polo": {
     vi: "ÁO POLO UNISEX",
     category: "aopolo"
   },
   "polo shirt": {
+    vi: "ÁO POLO CỔ BẺ",
+    category: "aopolo"
+  },
+  "military uniform": {
     vi: "ÁO POLO CỔ BẺ",
     category: "aopolo"
   },
@@ -92,12 +84,6 @@ module.exports = {
   "white shirt": {
     vi: "ÁO SƠ MI TRẮNG",
     category: "aosomi"
-  },
-
-  // ================== ÁO CỔ LỌ ==================
-  "turtleneck": {
-    vi: "ÁO NAM CỔ LỌ NÂU",
-    category: "aolen"
   },
 
   // ================== QUẦN SHORT ==================
@@ -124,7 +110,7 @@ module.exports = {
     category: "quankaki"
   },
 
-  // ================== VÁY – ĐẦM ==================
+  // ================== VÁY ==================
   "dress": {
     vi: "VÁY BODY CỔ VEST",
     category: "vay"
@@ -135,16 +121,16 @@ module.exports = {
   },
 
   // ================== BỘ ĐỒ ==================
-  "tracksuit": {
+  "suit": {
+    vi: "BỘ ĐỒ NAM VẢI NHẸ",
+    category: "bodonam"
+  },
+  "outfit set": {
     vi: "BỘ ĐỒ NAM VẢI NHẸ",
     category: "bodonam"
   },
   "set clothes": {
     vi: "BỘ ĐỒ NAM NHỎ",
-    category: "bodonam"
-  },
-  "outfit set": {
-    vi: "BỘ ĐỒ NAM VẢI NHẸ",
     category: "bodonam"
   }
 

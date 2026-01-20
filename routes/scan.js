@@ -43,12 +43,19 @@ router.post("/", async (req, res) => {
     category: info.category
   }).limit(6);
 
-  res.json({
-    label,
-    vi: info.vi,
-    category: info.category,
-    products
-  });
+  const fixedProducts = products.map(p => ({
+  ...p._doc,
+  image: p.image.startsWith("http")
+    ? p.image
+    : `/images/${p.image}`
+}));
+
+res.json({
+  label,
+  vi: info.vi,
+  category: info.category,
+  products: fixedProducts
 });
+
 
 module.exports = router;
