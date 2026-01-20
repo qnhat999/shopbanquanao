@@ -69,7 +69,8 @@ function createProductCard(p) {
   }
 
   const img = document.createElement('img');
-  img.src = p.image; // ✅ FIX CHUẨN RENDER
+  // ✅ FIX QUAN TRỌNG: GHÉP ĐƯỜNG DẪN ẢNH ĐÚNG
+  img.src = `/images/${p.image}`;
   img.className = 'zoom-hover';
   card.appendChild(img);
 
@@ -125,7 +126,7 @@ async function addToCart(product) {
         productId: product._id,
         name: product.name,
         price: product.price,
-        image: product.image,
+        image: product.image, // ✅ DB chỉ lưu tên file
         quantity: 1,
         userName: name || '',
         userPhone: phone || ''
@@ -134,7 +135,6 @@ async function addToCart(product) {
 
     if (res.ok) {
       alert('🛒 Đã thêm vào giỏ hàng!');
-      updateCartCount();
       if (path.includes('cart.html')) loadCart();
     } else {
       alert('❌ Vui lòng đăng nhập.');
@@ -167,7 +167,8 @@ async function loadCart() {
     total += item.price * item.quantity;
     container.innerHTML += `
       <div class="cart-item">
-        <img src="${item.image}" />
+        <!-- ✅ FIX ẢNH GIỎ HÀNG -->
+        <img src="/images/${item.image}" />
         <div class="item-info">
           <p><strong>${item.name}</strong></p>
           <p>${item.price.toLocaleString()} VND</p>
