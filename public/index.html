@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Male Fashion</title>
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+</head>
+<body>
+
+<!-- ================= HEADER ================= -->
+<header>
+  <div class="container header">
+    <div class="logo">Male fashion<span>.</span></div>
+
+    <nav class="main-nav">
+      <a href="moi.html">Mới</a>
+      <a href="banchay.html">Bán chạy</a>
+      <a href="thoitrang.html">Thời trang</a>
+      <a href="khuyenmai.html">Khuyến mãi</a>
+      <a href="scan.html">AI Scan</a> <!-- ✅ link sang trang AI -->
+    </nav>
+
+    <div class="search-cart-login">
+      <input type="text" id="searchInput" placeholder="Tìm sản phẩm..." />
+      <button onclick="searchProducts()">🔍</button>
+
+      <a href="cart.html">
+        Giỏ hàng <i class="fa fa-shopping-cart"></i>
+        <span id="cart-count">0</span>
+      </a>
+
+      <a href="login.html">Đăng nhập</a>
+    </div>
+  </div>
+</header>
+
+<!-- ================= BANNER ================= -->
+<section class="banner">
+  <img src="https://shopbanquanao-z6qm.onrender.com/images/banner.jpg"
+       alt="Banner thời trang nam"/>
+</section>
+
+<!-- ================= SEARCH RESULT ================= -->
+<section id="search-results" style="display:none;">
+  <h2>KẾT QUẢ TÌM KIẾM</h2>
+  <div class="product-grid" id="search-grid"></div>
+</section>
+
+<section id="recommend-section" style="display:none;">
+  <h2>🤖 Gợi ý cho bạn</h2>
+  <div class="product-grid" id="recommend-grid"></div>
+</section>
+
+<!-- ================= PRODUCTS ================= -->
+<section class="section-new-products">
+  <h2>SẢN PHẨM MỚI</h2>
+  <div class="product-grid" id="products-new"></div>
+</section>
+
+<section class="section-products">
+  <h2>SẢN PHẨM BÁN CHẠY</h2>
+  <div class="product-grid" id="products-best"></div>
+</section>
+
+<section class="section-products">
+  <h2>SẢN PHẨM XEM NHIỀU</h2>
+  <div class="product-grid" id="products-sale"></div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="footer-container">
+    <div class="footer-col">
+      <div class="footer-logo">Male fashion<span>.</span></div>
+      <p>Khách hàng là trung tâm của mô hình kinh doanh độc đáo của chúng tôi.</p>
+      <img src="https://shopbanquanao-z6qm.onrender.com/images/the.png"/>
+    </div>
+
+    <div class="footer-col">
+      <h4>LPT SHOPPING</h4>
+      <ul>
+        <li><a href="moi.html">Mới</a></li>
+        <li><a href="banchay.html">Bán chạy</a></li>
+        <li><a href="khuyenmai.html">Khuyến mãi</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>LPT SHOP</h4>
+      <ul>
+        <li><a href="#">Liên hệ</a></li>
+        <li><a href="#">Thanh toán</a></li>
+        <li><a href="#">Giao hàng</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>ĐĂNG KÝ EMAIL</h4>
+      <input type="email" placeholder="Nhập Email"/>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2025 | Made by Nhật</p>
+  </div>
+</footer>
+
+<!-- ================= CHATBOT ================= -->
+<div id="chatbot">
+  <div id="chatbox"></div>
+  <input id="chatInput" placeholder="Hỏi: áo nam dưới 300k..." />
+  <button onclick="sendChat()">Gửi</button>
+</div>
+
+<!-- ================= JS ================= -->
+<script src="script.js"></script>
+<script src="chatbot.js"></script>
+
+</body>
+</html>
