@@ -1,61 +1,50 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const Product = require("../models/Product");
-const AI_LABEL_MAP = require("./ai-label-map");
+const Product = require('../models/Product');
+const labelMap = require('./ai-label-map');
 
-router.post("/", async (req, res) => {
-  let { label } = req.body;
+// POST /api/scan
+router.post('/', async (req, res) => {
+  try {
+    const { label } = req.body;
 
-  if (!label) {
-    return res.json({
-      vi: "Không xác định",
-      products: []
-    });
-  }
-
-  // 🔹 Chuẩn hóa label AI
-  label = label.toLowerCase().split(",")[0].trim();
-
-  // 🔹 Tìm khớp trực tiếp
-  let info = AI_LABEL_MAP[label];
-
-  // 🔹 Fallback: tìm label gần đúng
-  if (!info) {
-    for (const key in AI_LABEL_MAP) {
-      if (label.includes(key)) {
-        info = AI_LABEL_MAP[key];
-        break;
-      }
+    if (!label) {
+      return res.status(400).json({
+        success: false,
+        message: 'No label provided'
+      });
     }
-  }
 
-  // ❌ Không nhận diện được
-  if (!info) {
-    return res.json({
+    // map nhãn AI → category trong DB
+    const mappedCategory = labelMap[label.toLowerCase()] || null;
+
+    if (!mappedCategory) {
+      return res.json({
+        success: true,
+        label,
+        products: []
+      });
+    }
+
+    // lấy sản phẩm theo category
+    const products = await Product.find({
+      category: mappedCategory
+    }).limit(6);
+
+    res.json({
+      success: true,
       label,
-      vi: "Không xác định",
-      products: []
+      category: mappedCategory,
+      products
+    });
+
+  } catch (err) {
+    console.error('SCAN ERROR:', err);
+    res.status(500).json({
+      success: false,
+      message: 'Server error'
     });
   }
-
-  // 🔹 Lấy sản phẩm theo category
-  const products = await Product.find({
-    category: info.category
-  }).limit(6);
-
-  const fixedProducts = products.map(p => ({
-  ...p._doc,
-  image: p.image.startsWith("http")
-    ? p.image
-    : `/images/${p.image}`
-}));
-
-res.json({
-  label,
-  vi: info.vi,
-  category: info.category,
-  products: fixedProducts
 });
-
 
 module.exports = router;
