@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Đăng nhập</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+
+  <!-- CSS của bạn -->
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="bg-white border-bottom py-2">
+    <div class="container d-flex justify-content-between align-items-center">
+      <div class="logo fw-bold fs-4"><span>🛍</span> ShopQuầnÁo</div>
+      <a href="index.html" class="btn btn-outline-dark">Trang chủ</a>
+    </div>
+  </header>
+
+  <!-- Form Login -->
+  <div class="container">
+    <div class="login-container mt-5 bg-white p-4 rounded shadow-sm mx-auto" style="max-width: 400px;">
+      <h2 class="text-center mb-4">Đăng Nhập</h2>
+      <form>
+        <div class="mb-3">
+          <label for="name" class="form-label">Tên người dùng</label>
+          <input type="text" name="name" id="name" class="form-control" placeholder="Nhập tên" required>
+        </div>
+        <div class="mb-3">
+          <label for="phone" class="form-label">Số điện thoại</label>
+          <input type="tel" name="phone" id="phone" class="form-control" placeholder="Nhập số điện thoại" required>
+        </div>
+        <button type="submit" class="btn btn-dark w-100">Đăng nhập</button>
+      </form>
+      <p class="text-center mt-3 text-muted">Thông tin được lưu tạm thời cho việc đặt hàng.</p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-white mt-5 py-4">
+    <div class="container text-center">
+      <p class="mb-0">© 2025 Shop Quần Áo. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- JS của bạn -->
+  <script src="script.js"></script>
+</body>
+</html>

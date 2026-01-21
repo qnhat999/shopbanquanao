@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <a href="index.html" class="floating-home">🏠</a>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Thời trang</title>
+  <link rel="stylesheet" href="/style.css" />
+  <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+/>
+</head>
+<body>
+  <h1>THỜI TRANG</h1>
+  <div class="product-grid">
+    <div class="product-card">
+      <img src="http://localhost:5000/images/sp18_1.jpg">
+      <p>ÁO SWEATER</p>
+      <p class="price">250.000 VND</p>
+      <div class="product-rating">
+  ${renderStars(product.rating)}
+</div>
+      <button onclick="addToCart('21')">🛒 Thêm giỏ hàng</button>
+    </div>
+    <div class="product-card">
+      <img src="http://localhost:5000/images/sp15_1.jpg">
+      <p>VÁY BODY CỔ VEST</p>
+      <p class="price">329.000 VND</p>
+      <div class="product-rating">
+  ${renderStars(product.rating)}
+</div>
+      <button onclick="addToCart('22')">🛒 Thêm giỏ hàng</button>
+    </div>
+    <div class="product-card">
+      <img src="http://localhost:5000/images/sp11_3.jpg">
+      <p>ÁO LEN NỮ RỘNG</p>
+      <p class="price">199.000 VND</p>
+      <div class="product-rating">
+  ${renderStars(product.rating)}
+</div>
+      <button onclick="addToCart('23')">🛒 Thêm giỏ hàng</button>
+    </div>
+    <div class="product-card">
+      <img src="http://localhost:5000/images/sp24_2.jpg">
+      <p>ÁO NAM CỔ LỌ NÂU</p>
+      <p class="price">320.000 VND</p>
+      <div class="product-rating">
+  ${renderStars(product.rating)}
+</div>
+      <button onclick="addToCart('24')">🛒 Thêm giỏ hàng</button>
+    </div>
+    <div class="product-card">
+      <img src="http://localhost:5000/images/sp10_1.jpg">
+      <p>ÁO LEN ÔM DÁNG</p>
+      <p class="price">210.000 VND</p>
+      <div class="product-rating">
+  ${renderStars(product.rating)}
+</div>
+      <button onclick="addToCart('25')">🛒 Thêm giỏ hàng</button>
+    </div>
+    <div class="product-card">
+      <img src="http://localhost:5000/images/sp26_1.jpg">
+      <p>HOODIE UNISEX</p>
+      <p class="price">200.000 VND</p>
+      <div class="product-rating">
+  ${renderStars(product.rating)}
+</div>
+      <button onclick="addToCart('26')">🛒 Thêm giỏ hàng</button>
+    </div>
+    <div class="product-card">
+      <img src="http://localhost:5000/images/sp1_3.jpg">
+      <p>ÁO POLO UNISEX</p>
+      <p class="price">259.000 VND</p>
+      <div class="product-rating">
+  ${renderStars(product.rating)}
+</div>
+      <button onclick="addToCart('27')">🛒 Thêm giỏ hàng</button>
+    </div>
+    <div class="product-card">
+      <img src="http://localhost:5000/images/sp17_4.jpg">
+      <p>BỘ ĐỒ NAM NHỎ</p>
+      <p class="price">399.000 VND</p>
+      <div class="product-rating">
+  ${renderStars(product.rating)}
+</div>
+      <button onclick="addToCart('28')">🛒 Thêm giỏ hàng</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
+</html>

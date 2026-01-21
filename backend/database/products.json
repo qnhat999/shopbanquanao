@@ -1,0 +1,269 @@
+[
+  {
+    "name": "ÁO KHOÁC JEAN",
+    "price": 370000,
+    "image": "/sp2_3.jpg",
+    "type": "new",
+    "category": "aokhoac",
+    "rating": 4.5
+  },
+  {
+    "name": "ÁO SWEATER",
+    "price": 250000,
+    "image": "/sp16_1.jpg",
+    "type": "new",
+    "category": "aolen",
+    "rating": 4.2
+  },
+  {
+    "name": "ÁO HOODIE UNISEX",
+    "price": 200000,
+    "image": "/sp17_1.jpg",
+    "type": "new",
+    "category": "aokhoac",
+    "rating": 4.8
+  },
+  {
+    "name": "QUẦN SHORT HÈ",
+    "price": 160000,
+    "image": "/sp22_1.jpg",
+    "type": "new",
+    "category": "quanshort",
+    "rating": 4.0
+  },
+  {
+    "name": "ÁO KHOÁC BOMBER",
+    "price": 450000,
+    "image": "/sp26_3.jpg",
+    "type": "new",
+    "category": "aokhoac",
+    "rating": 4.7
+  },
+  {
+    "name": "ÁO POLO CỔ BẺ",
+    "price": 259000,
+    "image": "/sp20_2.jpg",
+    "type": "new",
+    "category": "aopolo",
+    "rating": 4.3
+  },
+  {
+    "name": "ÁO SƠ MI TRẮNG",
+    "price": 349000,
+    "image": "/sp24_1.jpg",
+    "type": "new",
+    "category": "aosomi",
+    "rating": 4.6
+  },
+  {
+    "name": "ÁO THUN NAM COTTON",
+    "price": 299000,
+    "image": "/sp27_1.jpg",
+    "type": "new",
+    "category": "aothun",
+    "rating": 4.1
+  },
+  {
+    "name": "ÁO KHOÁC JEAN NAM",
+    "price": 370000,
+    "image": "/sp2_2.jpg",
+    "type": "best",
+    "category": "aokhoac",
+    "rating": 4.9
+  },
+  {
+    "name": "ÁO LEN NỮ ÔM DÁNG",
+    "price": 210000,
+    "oldPrice": 240000,
+    "image": "/sp12_1.jpg",
+    "type": "best",
+    "category": "aolen",
+    "rating": 4.4
+  },
+  {
+    "name": "ÁO THUN CỔ BẺ",
+    "price": 230000,
+    "image": "/sp20_1.jpg",
+    "type": "best",
+    "category": "aothun",
+    "rating": 4.0
+  },
+  {
+    "name": "ÁO LEN NỮ FORM RỘNG",
+    "price": 199000,
+    "image": "/sp15_3.jpg",
+    "type": "best",
+    "category": "aolen",
+    "rating": 4.6
+  },
+  {
+    "name": "VÁY BODY CỔ VEST",
+    "price": 329000,
+    "image": "/sp7_1.jpg",
+    "type": "best",
+    "category": "vay",
+    "rating": 4.8
+  },
+  {
+    "name": "ÁO NAM CỔ LỌ NÂU",
+    "price": 320000,
+    "image": "/sp22_2.jpg",
+    "type": "best",
+    "category": "aolen",
+    "rating": 4.3
+  },
+  {
+    "name": "BỘ ĐỒ NAM VẢI NHẸ",
+    "price": 399000,
+    "image": "/sp27_4.jpg",
+    "type": "best",
+    "category": "bodonam",
+    "rating": 4.7
+  },
+  {
+    "name": "QUẦN KAKI NAM",
+    "price": 268000,
+    "oldPrice": 358000,
+    "image": "/sp25_1.jpg",
+    "type": "best",
+    "category": "quankaki",
+    "rating": 4.5
+  },
+
+  {
+    "name": "ÁO POLO UNISEX",
+    "price": 259000,
+    "oldPrice": 289000,
+    "image": "/sp16_2.jpg",
+    "type": "sale",
+    "category": "aopolo",
+    "rating": 4.2
+  },
+  {
+    "name": "QUẦN SHORT MÙA HÈ",
+    "price": 160000,
+    "oldPrice": 200000,
+    "image": "/sp22_3.jpg",
+    "type": "sale",
+    "category": "quanshort",
+    "rating": 4.1
+  },
+  {
+    "name": "ÁO LEN RỘNG",
+    "price": 199000,
+    "oldPrice": 250000,
+    "image": "/sp12_3.jpg",
+    "type": "sale",
+    "category": "aolen",
+    "rating": 4.4
+  },
+  {
+    "name": "ÁO SWEATER",
+    "price": 250000,
+    "image": "/sp11_1.jpg",
+    "type": "sale",
+    "category": "aolen",
+    "rating": 4.0
+  },
+  {
+    "name": "ÁO THUN COTTON",
+    "price": 269000,
+    "oldPrice": 299000,
+    "image": "/sp9_1.jpg",
+    "type": "sale",
+    "category": "aothun",
+    "rating": 4.3
+  },
+  {
+    "name": "ÁO HOODIE",
+    "price": 180000,
+    "oldPrice": 200000,
+    "image": "/sp19_2.jpg",
+    "type": "sale",
+    "category": "aokhoac",
+    "rating": 4.6
+  },
+  {
+    "name": "ÁO LEN ÔM DÁNG",
+    "price": 210000,
+    "oldPrice": 240000,
+    "image": "/sp12_2.jpg",
+    "type": "sale",
+    "category": "aolen",
+    "rating": 4.5
+  },
+  {
+    "name": "QUẦN KAKI TRẺ TRUNG",
+    "price": 268000,
+    "oldPrice": 358000,
+    "image": "/sp13_2.jpg",
+    "type": "sale",
+    "category": "quankaki",
+    "rating": 4.2
+  },
+
+  {
+    "name": "BỘ ĐỒ NAM NHỎ",
+    "price": 399000,
+    "image": "/sp17_4.jpg",
+    "type": "fashion",
+    "category": "bodonam",
+    "rating": 4.7
+  },
+  {
+    "name": "ÁO POLO UNISEX",
+    "price": 259000,
+    "image": "/sp1_3.jpg",
+    "type": "fashion",
+    "category": "aopolo",
+    "rating": 4.3
+  },
+  {
+    "name": "HOODIE UNISEX",
+    "price": 200000,
+    "image": "/sp26_1.jpg",
+    "type": "fashion",
+    "category": "aokhoac",
+    "rating": 4.8
+  },
+  {
+    "name": "ÁO LEN ÔM DÁNG",
+    "price": 210000,
+    "image": "/sp10_1.jpg",
+    "type": "fashion",
+    "category": "aolen",
+    "rating": 4.1
+  },
+  {
+    "name": "ÁO NAM CỔ LỌ NÂU",
+    "price": 320000,
+    "image": "/sp24_2.jpg",
+    "type": "fashion",
+    "category": "aolen",
+    "rating": 4.4
+  },
+  {
+    "name": "ÁO LEN NỮ RỘNG",
+    "price": 199000,
+    "image": "/sp11_3.jpg",
+    "type": "fashion",
+    "category": "aolen",
+    "rating": 4.0
+  },
+  {
+    "name": "VÁY BODY CỔ VEST",
+    "price": 329000,
+    "image": "/sp15_1.jpg",
+    "type": "fashion",
+    "category": "vay",
+    "rating": 4.6
+  },
+  {
+    "name": "ÁO SWEATER",
+    "price": 250000,
+    "image": "/sp18_1.jpg",
+    "type": "fashion",
+    "category": "aothun",
+    "rating": 4.2
+  }
+]
