@@ -29,20 +29,22 @@ app.use('/api/scan', scanRoutes);
 app.use('/api/chatbot', chatbotRoutes);
 
 // ===== CHỌN DB THEO NODE_ENV =====
-const dbUri =
+const mongoURI =
   process.env.NODE_ENV === 'production'
     ? process.env.MONGODB_ATLAS_URI
     : process.env.MONGODB_LOCAL_URI;
 
-console.log('🔌 Using MongoDB:', dbUri);
+console.log('🔌 Using MongoDB:', mongoURI);
 
-// ===== CONNECT MONGODB + START SERVER =====
 mongoose
-  .connect(dbUri)
+  .connect(mongoURI)
   .then(() => {
     console.log('✅ MongoDB connected');
     app.listen(PORT, () => {
       console.log(`🚀 Server running at http://localhost:${PORT}`);
     });
   })
-  .catch(err => console.error('❌ MongoDB error:', err));
+  .catch(err => {
+    console.error('❌ MongoDB error:', err);
+  });
+
