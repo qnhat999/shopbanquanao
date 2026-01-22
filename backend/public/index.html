@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Male Fashion</title>
 
-  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="style.css">
 
   <link
   rel="stylesheet"
@@ -16,7 +16,7 @@
 
 <!-- ================= HEADER ================= -->
 <header>
-  <div class="container header">
+  <div class="header-inner">
     <div class="logo">Male fashion<span>.</span></div>
 
     <nav class="main-nav">
@@ -24,7 +24,7 @@
       <a href="banchay.html">Bán chạy</a>
       <a href="thoitrang.html">Thời trang</a>
       <a href="khuyenmai.html">Khuyến mãi</a>
-      <a href="scan.html">AI Scan</a> <!-- ✅ link sang trang AI -->
+      <a href="scan.html">AI Scan</a>
     </nav>
 
     <div class="search-cart-login">
@@ -41,38 +41,49 @@
   </div>
 </header>
 
+
 <!-- ================= BANNER ================= -->
 <section class="banner">
-  <img src="https://shopbanquanao-z6qm.onrender.com/images/banner.jpg"
-       alt="Banner thời trang nam"/>
+  <div class="banner-slider">
+    <img src="/images/banner.jpg" class="active banner-click">
+    <img src="/images/banner2.jpg" class="banner-click">
+    <img src="/images/banner3.jpg" class="banner-click">
+  </div>
 </section>
 
 <!-- ================= SEARCH RESULT ================= -->
 <section id="search-results" style="display:none;">
-  <h2>KẾT QUẢ TÌM KIẾM</h2>
-  <div class="product-grid" id="search-grid"></div>
+  <div class="section-inner">
+    <h2>KẾT QUẢ TÌM KIẾM</h2>
+    <div class="product-grid" id="search-grid"></div>
+  </div>
 </section>
 
 <section id="recommend-section" style="display:none;">
-  <h2>🤖 Gợi ý cho bạn</h2>
-  <div class="product-grid" id="recommend-grid"></div>
+  <div class="section-inner">
+    <h2>🤖 Gợi ý cho bạn</h2>
+    <div class="product-grid" id="recommend-grid"></div>
+  </div>
 </section>
 
+
 <!-- ================= PRODUCTS ================= -->
-<section class="section-new-products">
-  <h2>SẢN PHẨM MỚI</h2>
+<section class="section-new">
+  <h2>🆕 SẢN PHẨM MỚI</h2>
   <div class="product-grid" id="products-new"></div>
 </section>
 
-<section class="section-products">
-  <h2>SẢN PHẨM BÁN CHẠY</h2>
+<section class="section-best">
+  <h2>🔥 BÁN CHẠY</h2>
   <div class="product-grid" id="products-best"></div>
 </section>
 
-<section class="section-products">
-  <h2>SẢN PHẨM XEM NHIỀU</h2>
+<section class="section-sale">
+  <h2>👀 XEM NHIỀU</h2>
   <div class="product-grid" id="products-sale"></div>
 </section>
+
+
 
 <!-- ================= FOOTER ================= -->
 <footer>
@@ -122,6 +133,13 @@
 <!-- ================= JS ================= -->
 <script src="script.js"></script>
 <script src="chatbot.js"></script>
+<!-- MODAL XEM ẢNH -->
+<!-- IMAGE MODAL -->
+<!-- ===== MODAL ZOOM ẢNH ===== -->
+<div id="imageModal" class="image-modal">
+  <span class="close-modal">&times;</span>
+  <img id="modalImg" src="" alt="Zoom image">
+</div>
 
 </body>
 </html>

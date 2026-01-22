@@ -51,28 +51,25 @@ async function scanClothes() {
 // 4️⃣ HIỂN THỊ SẢN PHẨM GỢI Ý
 function showProducts(data) {
   if (!data.products || data.products.length === 0) {
-    alert("Không có sản phẩm phù hợp");
+    resultText.innerText = "❌ Không có sản phẩm phù hợp";
     return;
   }
 
- const grid = document.getElementById("ai-products");
-grid.innerHTML = "";
+  const grid = document.getElementById("ai-products");
+  grid.innerHTML = "";
 
-data.products.forEach(p => {
-  grid.innerHTML += `
-    <div class="ai-product">
-      <img src="/images${p.image}" alt="${p.name}">
-      <h4>${p.name}</h4>
-      <p>${p.price.toLocaleString()} đ</p>
-      <button onclick="addToCart('${p._id}')">Thêm giỏ hàng</button>
-    </div>
-  `;
-});
-
-
-
-  document.getElementById("recommend-section").style.display = "block";
+  data.products.forEach(p => {
+    grid.innerHTML += `
+      <div class="ai-product">
+        <img src="/images/${p.image}" alt="${p.name}">
+        <h4>${p.name}</h4>
+        <p>${p.price.toLocaleString()} đ</p>
+        <button onclick="addToCart('${p._id}')">🛒 Thêm giỏ hàng</button>
+      </div>
+    `;
+  });
 }
+
 
 // AUTO LOAD
 startCamera();

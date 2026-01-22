@@ -7,7 +7,7 @@
   <title>AI Nhận diện trang phục</title>
 
   <!-- CSS -->
-  <link rel="stylesheet" href="/style.css" />
+  <link rel="stylesheet" href="style.css" />
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -66,9 +66,10 @@
     }
 
     .result-box {
-      border: 1px solid #ddd;
+      border: 2px solid #0d6efd;
       padding: 20px;
       border-radius: 10px;
+      background: #f8f9ff;
     }
 
     .ai-label {
@@ -88,12 +89,29 @@
       padding: 10px;
       border-radius: 8px;
       text-align: center;
+      background: #fff;
     }
 
     .ai-product img {
       width: 100%;
-      max-width: 120px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 6px;
       margin-bottom: 8px;
+    }
+
+    .ai-product button {
+      margin-top: 8px;
+      padding: 6px 10px;
+      border: none;
+      background: #000;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .ai-product button:hover {
+      background: #333;
     }
 
     .back-home {
@@ -149,14 +167,14 @@
       </button>
     </div>
 
-    <!-- RESULT -->
+    <!-- RESULT / SẢN PHẨM TRÙNG -->
     <div class="result-box">
       <div id="ai-result" class="ai-label">
         🤖 Chưa nhận diện
       </div>
 
       <div id="ai-products" class="ai-products">
-        <!-- sản phẩm AI render -->
+        <!-- sản phẩm trùng backend render ở đây -->
       </div>
     </div>
 
@@ -172,6 +190,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.16.0"></script>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
 <script src="scan-ai.js"></script>
+<script src="script.js"></script>
 
 </body>
 </html>

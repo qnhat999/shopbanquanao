@@ -55,12 +55,23 @@ async function searchProducts() {
   try {
     const res = await fetch(`${API_URL}/search?q=${encodeURIComponent(query)}`);
     const data = await res.json();
-    document.getElementById('search-results').style.display = 'block';
+
+    const resultSection = document.getElementById('search-results');
+    resultSection.style.display = 'block';
+
     renderProductsTo(data, 'search-grid');
+
+    // 🔥🔥 TỰ ĐỘNG CUỘN XUỐNG KẾT QUẢ
+    resultSection.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+
   } catch (err) {
     console.error('Lỗi tìm kiếm:', err);
   }
 }
+
 
 // ================= LOAD PRODUCTS =================
 async function loadProducts() {
@@ -194,21 +205,30 @@ async function loadCart() {
 
   data.forEach(item => {
     total += item.price * item.quantity;
-    container.innerHTML += `
-      <div class="cart-item">
-        <img src="/images/${item.image}" />
-        <div class="item-info">
-          <p><strong>${item.name}</strong></p>
-          <p>${item.price.toLocaleString()} VND</p>
-          <p>
-            <button onclick="changeQuantity('${item._id}', ${item.quantity - 1})">-</button>
-            ${item.quantity}
-            <button onclick="changeQuantity('${item._id}', ${item.quantity + 1})">+</button>
-          </p>
-        </div>
-        <button onclick="removeItem('${item._id}')">🗑️</button>
+   container.innerHTML += `
+  <div class="cart-item">
+    <img src="/images/${item.image}" />
+
+    <div class="cart-item-info">
+      <h5>${item.name}</h5>
+
+      <p>
+        <button onclick="changeQuantity('${item._id}', ${item.quantity - 1})">-</button>
+        <span class="mx-2">${item.quantity}</span>
+        <button onclick="changeQuantity('${item._id}', ${item.quantity + 1})">+</button>
+      </p>
+
+      <div class="cart-item-price">
+        ${item.price.toLocaleString()} VND
       </div>
-    `;
+    </div>
+
+    <button class="btn btn-sm btn-outline-danger"
+      onclick="removeItem('${item._id}')">
+      🗑️
+    </button>
+  </div>
+`;
   });
 
   totalEl.innerText = total.toLocaleString() + ' VND';
@@ -227,3 +247,69 @@ function setupLogin() {
     window.location.href = 'index.html';
   };
 }
+// ================= SEARCH ENTER =================
+document.addEventListener("DOMContentLoaded", function () {
+  const searchInput = document.getElementById("searchInput");
+
+  if (searchInput) {
+    searchInput.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        console.log("✅ Enter search:", searchInput.value);
+        searchProducts();
+      }
+    });
+  }
+});
+// ===== ZOOM ẢNH SẢN PHẨM (FIX CHUẨN) =====
+// ===== ZOOM ẢNH SẢN PHẨM (CHUẨN) =====
+document.addEventListener("DOMContentLoaded", () => {
+  const modal = document.getElementById("imageModal");
+  const modalImg = document.getElementById("modalImg");
+  const closeBtn = document.querySelector(".close-modal");
+
+  if (!modal || !modalImg || !closeBtn) return;
+
+  document.addEventListener("click", e => {
+    const img = e.target.closest(".product-card img");
+    if (!img) return;
+
+    modal.style.display = "flex";
+    modalImg.src = img.src;
+    document.body.style.overflow = "hidden";
+  });
+
+  closeBtn.onclick = () => {
+    modal.style.display = "none";
+    document.body.style.overflow = "auto";
+  };
+
+  modal.onclick = e => {
+    if (e.target === modal) {
+      modal.style.display = "none";
+      document.body.style.overflow = "auto";
+    }
+  };
+});
+// ===== AUTO BANNER SLIDE =====
+const banners = document.querySelectorAll(".banner-slider img");
+let index = 0;
+
+setInterval(() => {
+  banners[index].classList.remove("active");
+  index = (index + 1) % banners.length;
+  banners[index].classList.add("active");
+}, 4000);
+document.querySelectorAll(".banner-img").forEach(img => {
+  img.addEventListener("click", () => {
+    const link = img.dataset.link;
+    if (link) window.location.href = link;
+  });
+});
+
+
+
+
+
+
+
