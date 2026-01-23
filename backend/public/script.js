@@ -295,17 +295,69 @@ document.addEventListener("DOMContentLoaded", () => {
 const banners = document.querySelectorAll(".banner-slider img");
 let index = 0;
 
-setInterval(() => {
-  banners[index].classList.remove("active");
-  index = (index + 1) % banners.length;
-  banners[index].classList.add("active");
-}, 4000);
-document.querySelectorAll(".banner-img").forEach(img => {
-  img.addEventListener("click", () => {
-    const link = img.dataset.link;
-    if (link) window.location.href = link;
+if (banners.length > 0) {
+  setInterval(() => {
+    banners[index].classList.remove("active");
+    index = (index + 1) % banners.length;
+    banners[index].classList.add("active");
+  }, 4000);
+}
+
+window.changeQuantity = async function (orderId, newQty) {
+  if (newQty < 1) return;
+
+  try {
+    await fetch(`${ORDER_API}/${orderId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ quantity: newQty })
+    });
+    loadCart();
+  } catch {
+    alert("❌ Lỗi cập nhật số lượng");
+  }
+};
+
+window.removeItem = async function (orderId) {
+  if (!confirm("Xoá sản phẩm này?")) return;
+
+  try {
+    await fetch(`${ORDER_API}/${orderId}`, { method: "DELETE" });
+    loadCart();
+  } catch {
+    alert("❌ Lỗi xoá sản phẩm");
+  }
+};
+window.checkoutCart = async function () {
+  const name = localStorage.getItem("userName");
+  const phone = localStorage.getItem("userPhone");
+
+  if (!name || !phone) {
+    alert("❌ Bạn chưa đăng nhập");
+    return;
+  }
+
+  const res = await fetch("/api/orders/confirm", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, phone })
   });
-});
+
+  if (res.ok) {
+    alert("✅ Đơn hàng đã được xác nhận!");
+    loadCart(); // reload lại cart (sẽ trống)
+  } else {
+    alert("❌ Xác nhận đơn hàng thất bại");
+  }
+};
+
+
+
+
+ 
+
+
+
 
 
 

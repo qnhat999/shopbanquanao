@@ -21,16 +21,23 @@ header {
   border-bottom: 1px solid #ddd;
 }
 
-/* wrapper đúng chuẩn */
+/* lớp full */
 .header-inner {
-  max-width: 1400px;          /* 🔥 rộng hơn 1200 */
-  margin: 0 auto;             /* 🔥 căn giữa */
-  padding: 12px 40px;         /* 🔥 tạo lề */
+  width: 100%;
+}
+
+/* lớp căn nội dung */
+.header-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 12px 40px;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
 }
+
 
 /* LOGO – MALE FASHION (NỀN CAM NHẠT – VUÔNG) */
 .logo {
