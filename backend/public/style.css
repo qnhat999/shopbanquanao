@@ -302,17 +302,61 @@ footer {
 /* =========================
    CHATBOT
 ========================= */
-#chatbot {
+.chat-container {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  width: 260px;
+  width: 320px;
+  max-height: 450px;
   background: #fff;
-  border-radius: 8px;
-  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
   z-index: 9999;
-  border: 1px solid #ccc;
 }
+
+.chat-header {
+  background: #111;
+  color: #fff;
+  padding: 10px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-header button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.chat-container.minimized {
+  height: 45px;
+  overflow: hidden;
+}
+
+#chatbox {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.chat-input {
+  display: flex;
+  padding: 8px;
+  border-top: 1px solid #eee;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 6px;
+}
+
  /* =========================
    MENU DARK – GIỎ HÀNG & LOGIN
 ========================= */
@@ -404,13 +448,22 @@ footer {
 }
 
 /* Ảnh sản phẩm */
-.cart-item img {
+.cart-img-box {
   width: 90px;
   height: 110px;
-  object-fit: cover;
   border-radius: 10px;
+  overflow: hidden;     /* 🔥 QUAN TRỌNG */
   margin-right: 15px;
+  flex-shrink: 0;
+  background: #f2f2f2;
 }
+
+.cart-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 
 /* Thông tin */
 .cart-item-info {

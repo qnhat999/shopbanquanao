@@ -1,62 +1,118 @@
 let model;
+let isScanning = false;
+
 const video = document.getElementById("video");
 const resultText = document.getElementById("ai-result");
+const scanBtn = document.getElementById("scan-btn");
 
+// =====================
 // 1️⃣ MỞ CAMERA
+// =====================
 async function startCamera() {
-  const stream = await navigator.mediaDevices.getUserMedia({
-    video: true
-  });
-  video.srcObject = stream;
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: "environment" }
+    });
+    video.srcObject = stream;
+  } catch (err) {
+    alert("❌ Không thể mở camera");
+  }
 }
 
+// =====================
 // 2️⃣ LOAD MODEL
+// =====================
 async function loadModel() {
   model = await mobilenet.load();
   console.log("✅ MobileNet loaded");
+  resultText.innerText = "📷 Camera sẵn sàng, bấm Scan";
 }
 
-// 3️⃣ SCAN TRANG PHỤC
+
+
+// =====================
+// 4️⃣ SCAN TRANG PHỤC
+// =====================
 async function scanClothes() {
-  if (!model) {
-    alert("Model chưa sẵn sàng");
-    return;
-  }
+  if (!model || isScanning) return;
+
+  isScanning = true;
+  scanBtn.disabled = true;
+  resultText.innerText = "🤖 Đang phân tích...";
 
   const predictions = await model.classify(video);
 
-  if (predictions.length === 0) {
+  if (!predictions || predictions.length === 0) {
     resultText.innerText = "❌ Không nhận diện được";
+    resetScan();
     return;
   }
 
-  const topResult = predictions[0];
-  const label = topResult.className.toLowerCase();
-  console.log("🤖 AI LABEL:", label);
+  const top = predictions[0];
+  console.log("🤖 RAW:", top.className, top.probability);
 
-  resultText.innerText = `🤖 Nhận diện: ${label}`;
-
-  // GỬI LABEL VỀ BACKEND
-  fetch("/api/scan", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ label })
-  })
-    .then(res => res.json())
-    .then(data => {
-      showProducts(data);
-    });
+  // Kiểm tra độ tin cậy
+ if (top.probability < 0.15) {
+  resultText.innerText = "❌ Không nhận diện được rõ";
+  resetScan();
+  return;
 }
 
-// 4️⃣ HIỂN THỊ SẢN PHẨM GỢI Ý
+if (top.probability < 0.3) {
+  resultText.innerText = "⚠️ Độ tin cậy thấp, đang tìm sản phẩm gần đúng...";
+}
+
+
+  // Chuẩn hóa label
+  const label = top.className;
+
+resultText.innerText = `
+🤖 AI nhận diện:
+${label}
+Độ tin cậy: ${(top.probability * 100).toFixed(1)}%
+`;
+
+
+  // GỬI LABEL VỀ BACKEND
+  try {
+    const res = await fetch("/api/scan", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ label })
+    });
+
+    const data = await res.json();
+    showProducts(data);
+  } catch (err) {
+    resultText.innerText = "❌ Lỗi kết nối server";
+  }
+
+  resetScan();
+}
+
+// =====================
+// 5️⃣ HIỂN THỊ SẢN PHẨM
+// =====================
 function showProducts(data) {
+  const grid = document.getElementById("ai-products");
+  grid.innerHTML = "";
+
   if (!data.products || data.products.length === 0) {
-    resultText.innerText = "❌ Không có sản phẩm phù hợp";
+    resultText.innerText = `
+🤖 AI nhận diện:
+${data.label}
+
+⚠️ Hiện shop chưa có sản phẩm phù hợp
+`;
     return;
   }
 
-  const grid = document.getElementById("ai-products");
-  grid.innerHTML = "";
+  resultText.innerText = `
+🤖 AI nhận diện:
+${data.label}
+
+✅ Tìm thấy ${data.products.length} sản phẩm
+`;
 
   data.products.forEach(p => {
     grid.innerHTML += `
@@ -71,6 +127,16 @@ function showProducts(data) {
 }
 
 
+// =====================
+// RESET SCAN
+// =====================
+function resetScan() {
+  isScanning = false;
+  scanBtn.disabled = false;
+}
+
+// =====================
 // AUTO LOAD
+// =====================
 startCamera();
 loadModel();

@@ -207,7 +207,9 @@ async function loadCart() {
     total += item.price * item.quantity;
    container.innerHTML += `
   <div class="cart-item">
-    <img src="/images/${item.image}" />
+    <div class="cart-img-box">
+      <img src="/images/${item.image}">
+    </div>
 
     <div class="cart-item-info">
       <h5>${item.name}</h5>
@@ -337,6 +339,16 @@ window.checkoutCart = async function () {
     return;
   }
 
+  // 🔥 KIỂM TRA GIỎ HÀNG TRƯỚC
+  const cartRes = await fetch(`${ORDER_API}?name=${name}&phone=${phone}`);
+  const cart = await cartRes.json();
+
+  if (!cart || cart.length === 0) {
+    alert("🛒 Giỏ hàng đang trống, không thể xác nhận đơn!");
+    return;
+  }
+
+  // ✅ Có sản phẩm → mới cho xác nhận
   const res = await fetch("/api/orders/confirm", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -345,11 +357,13 @@ window.checkoutCart = async function () {
 
   if (res.ok) {
     alert("✅ Đơn hàng đã được xác nhận!");
-    loadCart(); // reload lại cart (sẽ trống)
+    loadCart();
   } else {
     alert("❌ Xác nhận đơn hàng thất bại");
   }
 };
+
+
 
 
 

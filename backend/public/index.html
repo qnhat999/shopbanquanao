@@ -34,7 +34,7 @@
 
         <a href="cart.html">
           Giỏ hàng <i class="fa fa-shopping-cart"></i>
-          <span id="cart-count">0</span>
+        
         </a>
 
         <a href="login.html">Đăng nhập</a>
@@ -127,11 +127,25 @@
 </footer>
 
 <!-- ================= CHATBOT ================= -->
-<div id="chatbot">
+<div id="chat-container" class="chat-container">
+  <div class="chat-header">
+    🤖 Chat hỗ trợ
+    <button id="toggleChat" onclick="toggleChat()">➖</button>
+  </div>
+
   <div id="chatbox"></div>
-  <input id="chatInput" placeholder="Hỏi: áo nam dưới 300k..." />
-  <button onclick="sendChat()">Gửi</button>
+
+  <div class="chat-input">
+    <input
+      id="chatInput"
+      type="text"
+      placeholder="Nhập câu hỏi..."
+      onkeydown="handleEnter(event)"
+    />
+    <button onclick="sendChat()">Gửi</button>
+  </div>
 </div>
+
 
 <!-- ================= JS ================= -->
 <script src="script.js"></script>
