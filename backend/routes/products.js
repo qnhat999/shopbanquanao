@@ -138,12 +138,13 @@ router.get("/recommend/:id", async (req, res) => {
 ================================ */
 router.post("/", async (req, res) => {
   try {
-    const product = await Product.create(req.body);
+    const product = new Product(req.body);
+    await product.save();
     res.status(201).json(product);
-  } catch (error) {
+  } catch (err) {
     res.status(400).json({
-      error: "Lỗi thêm sản phẩm",
-      details: error.message
+      message: "Lỗi thêm sản phẩm",
+      error: err.message
     });
   }
 });

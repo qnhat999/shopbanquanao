@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin - Quản lý sản phẩm</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="/admin.css">
+</head>
+<body>
+
+<div class="container mt-4">
+  <h2 class="text-center mb-4">TRANG QUẢN TRỊ SHOP</h2>
+
+  <!-- ================= FORM SẢN PHẨM ================= -->
+  <div class="card mb-4">
+    <div class="card-header fw-bold">Thêm / Sửa sản phẩm</div>
+    <div class="card-body">
+      <form id="productForm">
+        <input type="hidden" id="productId">
+
+        <div class="row g-3">
+
+          <div class="col-md-4">
+            <input id="name" class="form-control" placeholder="Tên sản phẩm" required>
+          </div>
+
+          <div class="col-md-2">
+            <input id="price" type="number" class="form-control" placeholder="Giá" required>
+          </div>
+
+          <div class="col-md-2">
+            <input id="oldPrice" type="number" class="form-control" placeholder="Giá cũ">
+          </div>
+
+          <div class="col-md-4">
+            <input id="image" class="form-control" placeholder="Ảnh (/images/ao1.jpg)" required>
+          </div>
+
+          <div class="col-md-2">
+            <input id="stock" type="number" class="form-control" placeholder="Số lượng">
+          </div>
+
+          <div class="col-md-2">
+            <input id="rating" type="number" step="0.5" min="0" max="5"
+              class="form-control" placeholder="Rating (0-5)">
+          </div>
+
+          <div class="col-md-4">
+            <select id="type" class="form-select" required>
+              <option value="">-- Loại hiển thị --</option>
+              <option value="new">Sản phẩm mới</option>
+              <option value="best">Bán chạy</option>
+              <option value="sale">Khuyến mãi</option>
+              <option value="fashion">Thời trang</option>
+              <option value="view">Xem nhiều</option>
+            </select>
+          </div>
+
+          <div class="col-md-4">
+            <select id="category" class="form-select" required>
+              <option value="">-- Danh mục --</option>
+              <option value="aothun">Áo thun</option>
+              <option value="aokhoac">Áo khoác</option>
+              <option value="aopolo">Áo polo</option>
+              <option value="aosomi">Áo sơ mi</option>
+              <option value="aolen">Áo len</option>
+              <option value="hoodie">Hoodie</option>
+              <option value="quanshort">Quần short</option>
+              <option value="quankaki">Quần kaki</option>
+              <option value="bodonam">Bộ đồ nam</option>
+              <option value="vay">Váy</option>
+            </select>
+          </div>
+
+          <div class="col-md-12">
+            <textarea id="description" class="form-control" rows="3"
+              placeholder="Mô tả sản phẩm"></textarea>
+          </div>
+
+          <div class="col-md-2 ms-auto">
+            <button class="btn btn-primary w-100">💾 Lưu</button>
+          </div>
+
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= DANH SÁCH SẢN PHẨM ================= -->
+  <div class="card mb-5">
+    <div class="card-header fw-bold">Danh sách sản phẩm</div>
+    <div class="card-body table-responsive">
+      <table class="table table-bordered text-center align-middle">
+        <thead class="table-dark">
+          <tr>
+            <th>Tên</th>
+            <th>Giá</th>
+            <th>Loại</th>
+            <th>Danh mục</th>
+            <th>Ảnh</th>
+            <th>Hành động</th>
+          </tr>
+        </thead>
+        <tbody id="productList"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ================= KHÁCH HÀNG ĐÃ MUA ================= -->
+  <h4 class="mt-5 mb-3">📦 Khách hàng đã mua</h4>
+
+  <div class="card">
+    <div class="card-body table-responsive">
+      <table class="table table-bordered text-center align-middle">
+        <thead class="table-dark">
+          <tr>
+            <th>Tên khách</th>
+            <th>SĐT</th>
+            <th>Sản phẩm</th>
+            <th>Số lượng</th>
+            <th>Giá</th>
+            <th>Thành tiền</th>
+            <th>Ngày mua</th>
+          </tr>
+        </thead>
+        <tbody id="orderList"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== CHECK LOGIN ADMIN ===== -->
+<script>
+fetch("/api/admin/check")
+  .then(res => {
+    if (!res.ok) {
+      window.location.href = "/adlogin.html";
+    }
+  });
+</script>
+
+<script src="/admin.js"></script>
+</body>
+</html>

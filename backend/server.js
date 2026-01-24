@@ -1,15 +1,18 @@
+require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
-
-// ✅ Load env
-require('dotenv').config();
+const session = require('express-session');
 
 const productRoutes = require('./routes/products');
 const orderRoutes = require('./routes/orders');
 const scanRoutes = require('./routes/scan');
 const chatbotRoutes = require('./routes/chatbot');
+
+const adminRoutes = require('./routes/admin');         // CRUD
+const adminAuthRoutes = require('./routes/adminAuth'); // LOGIN
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -17,6 +20,14 @@ const PORT = process.env.PORT || 5000;
 // ===== MIDDLEWARE =====
 app.use(cors());
 app.use(express.json());
+
+app.use(
+  session({
+    secret: 'admin-secret',
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
 // ===== STATIC FILES =====
 app.use(express.static(path.join(__dirname, 'public')));
@@ -28,7 +39,11 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/scan', scanRoutes);
 app.use('/api/chatbot', chatbotRoutes);
 
-// ===== CHỌN DB THEO NODE_ENV =====
+// ===== ADMIN =====
+app.use('/api/admin', adminAuthRoutes); // /login /logout /check
+app.use('/api/admin', adminRoutes);     // /products
+
+// ===== CONNECT DB & START SERVER =====
 const mongoURI =
   process.env.NODE_ENV === 'production'
     ? process.env.MONGODB_ATLAS_URI
@@ -47,4 +62,3 @@ mongoose
   .catch(err => {
     console.error('❌ MongoDB error:', err);
   });
-
