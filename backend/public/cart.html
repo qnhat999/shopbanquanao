@@ -56,6 +56,28 @@
       </p>
     </div>
   </footer>
+  <!-- ===== FORM THÔNG TIN KHÁCH HÀNG ===== -->
+<div id="orderModal" class="modal-overlay">
+  <div class="modal-box">
+    <h4>📝 Thông tin giao hàng</h4>
+
+    <input type="text" id="orderName" placeholder="Họ tên" required>
+<input type="text" id="orderPhone" placeholder="Số điện thoại" required>
+<input type="text" id="orderAddress" placeholder="Địa chỉ giao hàng" required>
+<textarea id="orderNote" placeholder="Ghi chú (tuỳ chọn)"></textarea>
+
+    <div class="modal-actions">
+      <button onclick="submitOrder()" class="btn btn-success">
+        Xác nhận đặt hàng
+      </button>
+      <button onclick="closeOrderModal()" class="btn btn-secondary">
+  Hủy
+</button>
+
+    </div>
+  </div>
+</div>
+
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

@@ -319,17 +319,22 @@ window.changeQuantity = async function (orderId, newQty) {
     alert("❌ Lỗi cập nhật số lượng");
   }
 };
-
+// ================= REMOVE ITEM =================
 window.removeItem = async function (orderId) {
   if (!confirm("Xoá sản phẩm này?")) return;
 
   try {
-    await fetch(`${ORDER_API}/${orderId}`, { method: "DELETE" });
+    await fetch(`${ORDER_API}/${orderId}`, {
+      method: "DELETE"
+    });
+
     loadCart();
   } catch {
     alert("❌ Lỗi xoá sản phẩm");
   }
 };
+
+// ================= CHECKOUT =================
 window.checkoutCart = async function () {
   const name = localStorage.getItem("userName");
   const phone = localStorage.getItem("userPhone");
@@ -339,28 +344,49 @@ window.checkoutCart = async function () {
     return;
   }
 
-  // 🔥 KIỂM TRA GIỎ HÀNG TRƯỚC
   const cartRes = await fetch(`${ORDER_API}?name=${name}&phone=${phone}`);
   const cart = await cartRes.json();
 
   if (!cart || cart.length === 0) {
-    alert("🛒 Giỏ hàng đang trống, không thể xác nhận đơn!");
+    alert("🛒 Giỏ hàng đang trống");
     return;
   }
 
-  // ✅ Có sản phẩm → mới cho xác nhận
+  // ✅ mở form nhập thông tin
+  document.getElementById("orderModal").style.display = "flex";
+  document.getElementById("orderName").value = name;
+  document.getElementById("orderPhone").value = phone;
+};
+
+// ================= SUBMIT ORDER =================
+window.submitOrder = async function () {
+  const name = document.getElementById("orderName").value.trim();
+  const phone = document.getElementById("orderPhone").value.trim();
+  const address = document.getElementById("orderAddress").value.trim();
+  const note = document.getElementById("orderNote").value.trim();
+
+  if (!name || !phone || !address) {
+    alert("❌ Vui lòng nhập đầy đủ thông tin");
+    return;
+  }
+
   const res = await fetch("/api/orders/confirm", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name, phone })
+    body: JSON.stringify({ name, phone, address, note })
   });
 
   if (res.ok) {
-    alert("✅ Đơn hàng đã được xác nhận!");
+    alert("🎉 Đặt hàng thành công!");
+    closeOrderModal();
     loadCart();
   } else {
-    alert("❌ Xác nhận đơn hàng thất bại");
+    alert("❌ Lỗi xác nhận đơn");
   }
+};
+
+window.closeOrderModal = function () {
+  document.getElementById("orderModal").style.display = "none";
 };
 
 

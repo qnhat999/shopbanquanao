@@ -135,6 +135,11 @@ async function loadOrders() {
       <td>${o.quantity}</td>
       <td>${Number(o.price).toLocaleString()} đ</td>
       <td>${Number(o.price * o.quantity).toLocaleString()} đ</td>
+
+      <!-- ✅ THÊM -->
+      <td>${o.address || "—"}</td>
+      <td>${o.note || ""}</td>
+
       <td>${new Date(o.createdAt).toLocaleString()}</td>
     </tr>
   `).join("");

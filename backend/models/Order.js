@@ -7,12 +7,19 @@ const OrderSchema = new mongoose.Schema(
       ref: 'Product',
       required: true
     },
+
     name: { type: String, required: true },
     price: { type: Number, required: true },
     image: { type: String, required: true },
     quantity: { type: Number, required: true },
+
     userName: { type: String, required: true },
     userPhone: { type: String, required: true },
+
+    // ✅ THÊM MỚI
+    address: { type: String },
+    note: { type: String },
+
     confirmed: { type: Boolean, default: false }
   },
   { timestamps: true }

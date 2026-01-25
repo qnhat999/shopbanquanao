@@ -75,19 +75,36 @@ router.delete('/:id', async (req, res) => {
 
 // [POST] Xác nhận đơn hàng
 router.post('/confirm', async (req, res) => {
-  const { name, phone } = req.body;
-  if (!name || !phone) return res.status(400).json({ message: 'Thiếu thông tin người dùng' });
+  const { name, phone, address, note } = req.body;
+
+  if (!name || !phone || !address) {
+    return res.status(400).json({ message: 'Thiếu thông tin' });
+  }
 
   try {
     const result = await Order.updateMany(
-      { userName: name, userPhone: phone, confirmed: { $ne: true } },
-      { $set: { confirmed: true } }
+      {
+        userName: name,
+        userPhone: phone,
+        confirmed: { $ne: true }
+      },
+      {
+        $set: {
+          confirmed: true,
+          address,
+          note
+        }
+      }
     );
 
     res.json({ message: 'Đơn hàng đã xác nhận', result });
   } catch (err) {
-    res.status(500).json({ message: 'Lỗi xác nhận đơn hàng', error: err });
+    res.status(500).json({
+      message: 'Lỗi xác nhận đơn hàng',
+      error: err
+    });
   }
 });
+
 
 module.exports = router;
