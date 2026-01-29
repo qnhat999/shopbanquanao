@@ -13,6 +13,9 @@ const chatbotRoutes = require('./routes/chatbot');
 
 const adminRoutes = require('./routes/admin');         // CRUD
 const adminAuthRoutes = require('./routes/adminAuth'); // LOGIN
+const adminAnalytics = require("./routes/adminAnalytics");
+const commentRoutes = require("./routes/comments");
+const visitRoutes = require("./routes/visits");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -20,6 +23,12 @@ const PORT = process.env.PORT || 5000;
 // ===== MIDDLEWARE =====
 app.use(cors());
 app.use(express.json());
+app.use(express.text({ type: "*/*" }));
+app.use("/api/analytics", require("./routes/analytics"));
+app.use("/api/comments", commentRoutes);
+app.use("/api/visits", visitRoutes);
+app.use("/api/admin/analytics", adminAnalytics);
+
 
 app.use(
   session({

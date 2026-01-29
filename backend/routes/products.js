@@ -191,4 +191,28 @@ router.delete("/:id", async (req, res) => {
 });
 
 
+router.post("/:id/view", async (req, res) => {
+  try {
+    await Product.findByIdAndUpdate(req.params.id, {
+      $inc: { views: 1 }
+    });
+    res.sendStatus(200);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.post("/:id/view", async (req, res) => {
+  try {
+    await Product.findByIdAndUpdate(req.params.id, {
+      $inc: { views: 1 }
+    });
+    res.sendStatus(200);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+
 module.exports = router;

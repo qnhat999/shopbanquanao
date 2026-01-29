@@ -55,11 +55,18 @@ async function searchProducts() {
   try {
     const res = await fetch(`${API_URL}/search?q=${encodeURIComponent(query)}`);
     const data = await res.json();
+    if (!res.ok) throw new Error("Fetch failed");
+
 
     const resultSection = document.getElementById('search-results');
     resultSection.style.display = 'block';
 
     renderProductsTo(data, 'search-grid');
+    if (data.length === 0) {
+  document.getElementById('search-grid').innerHTML = '<p>Không tìm thấy sản phẩm</p>';
+  return;
+}
+
 
     // 🔥🔥 TỰ ĐỘNG CUỘN XUỐNG KẾT QUẢ
     resultSection.scrollIntoView({
@@ -97,6 +104,7 @@ function createProductCard(p) {
   console.log('RATING:', p.rating);
   const card = document.createElement('div');
   card.className = 'product-card';
+  card.dataset.id = p._id;
 
   if (p.oldPrice) {
     const badge = document.createElement('div');
@@ -155,86 +163,106 @@ function renderProductsTo(products, id) {
 
 // ================= CART =================
 async function addToCart(product) {
-  const name = localStorage.getItem('userName');
-  const phone = localStorage.getItem('userPhone');
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  if (!user) {
+    alert("Bạn chưa đăng nhập");
+    return;
+  }
 
   try {
     const res = await fetch(ORDER_API, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         productId: product._id,
         name: product.name,
         price: product.price,
         image: product.image,
         quantity: 1,
-        userName: name || '',
-        userPhone: phone || ''
+        userName: user.userName,
+        userPhone: user.userPhone
       })
     });
 
-    if (res.ok) {
-      alert('🛒 Đã thêm vào giỏ hàng!');
-      if (path.includes('cart.html')) loadCart();
-    } else {
-      alert('❌ Vui lòng đăng nhập.');
-    }
-  } catch {
-    alert('⚠️ Lỗi server.');
+    const data = await res.json();
+    alert("🛒 Đã thêm vào giỏ hàng");
+  } catch (err) {
+    console.error(err);
+    alert("Lỗi khi thêm giỏ hàng");
   }
 }
 
-async function loadCart() {
-  const name = localStorage.getItem('userName');
-  const phone = localStorage.getItem('userPhone');
-  const container = document.querySelector('.cart-items');
-  const totalEl = document.getElementById('total-amount');
-  if (!container) return;
 
-  if (!name || !phone) {
+async function loadCart() {
+  const container = document.querySelector(".cart-items");
+  const totalEl = document.getElementById("total-amount");
+
+  if (!container || !totalEl) return;
+
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  if (!user) {
     container.innerHTML = '<p>❗ Bạn chưa đăng nhập.</p>';
     totalEl.innerText = '0 VND';
     return;
   }
 
-  const res = await fetch(`${ORDER_API}?name=${name}&phone=${phone}`);
-  const data = await res.json();
+  const { userName, userPhone } = user;
 
-  container.innerHTML = '';
-  let total = 0;
+  try {
+    const res = await fetch(
+      `/api/orders?name=${encodeURIComponent(userName)}&phone=${encodeURIComponent(userPhone)}`
+    );
 
-  data.forEach(item => {
-    total += item.price * item.quantity;
-   container.innerHTML += `
-  <div class="cart-item">
-    <div class="cart-img-box">
-      <img src="/images/${item.image}">
-    </div>
+    if (!res.ok) {
+      throw new Error("Không tải được giỏ hàng");
+    }
 
-    <div class="cart-item-info">
-      <h5>${item.name}</h5>
+    const data = await res.json();
 
-      <p>
-        <button onclick="changeQuantity('${item._id}', ${item.quantity - 1})">-</button>
-        <span class="mx-2">${item.quantity}</span>
-        <button onclick="changeQuantity('${item._id}', ${item.quantity + 1})">+</button>
-      </p>
+    container.innerHTML = '';
+    let total = 0;
 
-      <div class="cart-item-price">
-        ${item.price.toLocaleString()} VND
-      </div>
-    </div>
+    data.forEach(item => {
+      total += item.price * item.quantity;
 
-    <button class="btn btn-sm btn-outline-danger"
-      onclick="removeItem('${item._id}')">
-      🗑️
-    </button>
-  </div>
-`;
-  });
+      container.innerHTML += `
+        <div class="cart-item">
+          <div class="cart-img-box">
+            <img src="/images/${item.image}">
+          </div>
 
-  totalEl.innerText = total.toLocaleString() + ' VND';
+          <div class="cart-item-info">
+            <h5>${item.name}</h5>
+
+            <p>
+              <button onclick="changeQuantity('${item._id}', ${item.quantity - 1})">-</button>
+              <span class="mx-2">${item.quantity}</span>
+              <button onclick="changeQuantity('${item._id}', ${item.quantity + 1})">+</button>
+            </p>
+
+            <div class="cart-item-price">
+              ${item.price.toLocaleString()} VND
+            </div>
+          </div>
+
+          <button class="btn btn-sm btn-outline-danger"
+            onclick="removeItem('${item._id}')">
+            🗑️
+          </button>
+        </div>
+      `;
+    });
+
+    totalEl.innerText = total.toLocaleString() + ' VND';
+  } catch (err) {
+    console.error(err);
+    container.innerHTML = '<p>❌ Lỗi tải giỏ hàng</p>';
+    totalEl.innerText = '0 VND';
+  }
 }
+
 
 // ================= LOGIN =================
 function setupLogin() {
@@ -243,12 +271,19 @@ function setupLogin() {
 
   form.onsubmit = e => {
     e.preventDefault();
-    localStorage.setItem('userName', form.name.value.trim());
-    localStorage.setItem('userPhone', form.phone.value.trim());
-    alert('✅ Đăng nhập thành công!');
-    window.location.href = 'index.html';
+
+    const user = {
+      userName: form.name.value.trim(),
+      userPhone: form.phone.value.trim()
+    };
+
+    localStorage.setItem("user", JSON.stringify(user));
+
+    alert("✅ Đăng nhập thành công!");
+    window.location.href = "index.html";
   };
 }
+
 // ================= SEARCH ENTER =================
 document.addEventListener("DOMContentLoaded", function () {
   const searchInput = document.getElementById("searchInput");
@@ -334,60 +369,142 @@ window.removeItem = async function (orderId) {
   }
 };
 
-// ================= CHECKOUT =================
-window.checkoutCart = async function () {
-  const name = localStorage.getItem("userName");
-  const phone = localStorage.getItem("userPhone");
 
-  if (!name || !phone) {
+// ================= SUBMIT ORDER =================
+async function submitOrder() {
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  if (!user) {
     alert("❌ Bạn chưa đăng nhập");
     return;
   }
 
-  const cartRes = await fetch(`${ORDER_API}?name=${name}&phone=${phone}`);
-  const cart = await cartRes.json();
-
-  if (!cart || cart.length === 0) {
-    alert("🛒 Giỏ hàng đang trống");
-    return;
-  }
-
-  // ✅ mở form nhập thông tin
-  document.getElementById("orderModal").style.display = "flex";
-  document.getElementById("orderName").value = name;
-  document.getElementById("orderPhone").value = phone;
-};
-
-// ================= SUBMIT ORDER =================
-window.submitOrder = async function () {
-  const name = document.getElementById("orderName").value.trim();
-  const phone = document.getElementById("orderPhone").value.trim();
+  const { userName, userPhone } = user;
   const address = document.getElementById("orderAddress").value.trim();
   const note = document.getElementById("orderNote").value.trim();
 
-  if (!name || !phone || !address) {
-    alert("❌ Vui lòng nhập đầy đủ thông tin");
+  if (!address) {
+    alert("❌ Vui lòng nhập địa chỉ giao hàng");
     return;
   }
 
-  const res = await fetch("/api/orders/confirm", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name, phone, address, note })
-  });
+  try {
+    const res = await fetch("/api/orders/confirm", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userName,
+        userPhone,
+        address,
+        note
+      })
+    });
 
-  if (res.ok) {
-    alert("🎉 Đặt hàng thành công!");
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.message || "❌ Lỗi xác nhận đơn hàng");
+      return;
+    }
+
+    alert("✅ Đặt hàng thành công!");
     closeOrderModal();
-    loadCart();
-  } else {
-    alert("❌ Lỗi xác nhận đơn");
+    location.reload();
+  } catch (err) {
+    console.error(err);
+    alert("❌ Lỗi kết nối server");
   }
-};
+}
+
+
 
 window.closeOrderModal = function () {
   document.getElementById("orderModal").style.display = "none";
 };
+// chỉ chạy ở trang user
+if (!window.location.pathname.includes("admin.html")) {
+
+  let currentProductId = null;
+  let startTime = null;
+
+  document.addEventListener("click", (e) => {
+    const card = e.target.closest(".product-card");
+    if (!card) return;
+      fetch(`/api/products/${card.dataset.id}/view`, { method: "POST" });
+        fetch("/api/visits", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      productId: card.dataset.id,
+      userId: localStorage.getItem("userPhone") || "guest"
+    })
+  });
+
+
+    if (currentProductId && startTime) sendViewTime();
+
+    currentProductId = card.dataset.id;
+    startTime = Date.now();
+  });
+
+  window.addEventListener("beforeunload", () => {
+    if (currentProductId && startTime) sendViewTime();
+  });
+function sendViewTime() {
+  const timeSpent = Math.floor((Date.now() - startTime) / 1000);
+  const userId = localStorage.getItem("userPhone") || "guest";
+
+  fetch("/api/analytics/view-time", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      productId: currentProductId,
+      timeSpent,
+      userId
+    })
+  });
+}
+window.openOrderModal = function () {
+  document.getElementById("orderModal").style.display = "flex";
+};
+
+}
+// ================= SUBMIT COMMENT =================
+window.submitComment = async function (productId) {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const content = document.getElementById("commentContent").value.trim();
+
+  if (!content) {
+    alert("❌ Vui lòng nhập nội dung đánh giá");
+    return;
+  }
+
+  try {
+    const res = await fetch("/api/comments", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        productId,
+        userId: user?.userPhone || "guest",
+        content
+      })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.message || "❌ Lỗi gửi comment");
+      return;
+    }
+
+    alert("✅ Gửi đánh giá thành công!");
+    document.getElementById("commentContent").value = "";
+  } catch (err) {
+    console.error(err);
+    alert("❌ Lỗi kết nối server");
+  }
+};
+
 
 
 

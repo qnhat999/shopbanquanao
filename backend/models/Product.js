@@ -12,22 +12,28 @@ const productSchema = new mongoose.Schema(
     stock: { type: Number, default: 100 },
     description: String,
 
-    // ⭐⭐⭐⭐⭐ THÊM DÒNG NÀY
+    // ⭐ Rating
     rating: {
-  type: Number,
-  min: 0,
-  max: 5,
-  default: 0
-},
+      type: Number,
+      min: 0,
+      max: 5,
+      default: 0
+    },
 
-    // 🔹 Dùng cho hiển thị website
+    // 👁️ LƯỢT XEM SẢN PHẨM (CỰC KỲ QUAN TRỌNG CHO ANALYTICS)
+    views: {
+      type: Number,
+      default: 0
+    },
+
+    // 🔹 Hiển thị website
     type: {
       type: String,
       enum: ["new", "best", "sale", "fashion", "view"],
       required: true
     },
 
-    // 🔹 Dùng cho AI nhận diện
+    // 🔹 Phân loại
     category: {
       type: String,
       enum: [
