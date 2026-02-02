@@ -6,6 +6,7 @@ const Order = require("../models/Order");
 const ProductView = require("../models/ProductView");
 const Comment = require("../models/Comment");
 const ProductVisit = require("../models/ProductVisit");
+const UserVector = require("../models/UserVector");
 
 /* ================= DASHBOARD ANALYTICS ================= */
 router.get("/dashboard", async (req, res) => {
@@ -123,5 +124,88 @@ router.get("/view-analysis", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+router.post("/track", async (req, res) => {
+  try {
+    const {
+      userId,
+      type = "guest",
+      dwellTime = 0,
+      scrollDepth = 0,
+      heartbeatCount = 0
+    } = req.body;
+
+    if (!userId) {
+      return res.status(400).json({ error: "Missing userId" });
+    }
+
+    let vector = await UserVector.findOne({ userId });
+
+    if (!vector) {
+      vector = new UserVector({
+        userId,
+        type,
+        behavioral: {
+          dwellTime: 0,
+          scrollDepth: 0,
+          heartbeatCount: 0
+        }
+      });
+    }
+
+    /* ===== UPDATE BEHAVIOR ===== */
+    vector.behavioral.dwellTime += dwellTime;
+    vector.behavioral.scrollDepth = Math.max(
+      vector.behavioral.scrollDepth,
+      scrollDepth
+    );
+    vector.behavioral.heartbeatCount += heartbeatCount;
+
+    /* ===== COMBINED VECTOR ===== */
+    vector.combinedVector = [
+      vector.behavioral.dwellTime,
+      vector.behavioral.scrollDepth,
+      vector.behavioral.heartbeatCount,
+      vector.psychological?.sentimentScore || 0,
+      vector.historical?.recency || 0,
+      vector.historical?.frequency || 0,
+      vector.historical?.monetary || 0
+    ];
+
+    vector.updatedAt = new Date();
+    await vector.save();
+
+    res.json({ message: "Tracked successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+/* ================= ADMIN VIEW ANALYTICS ================= */
+router.get("/users", async (req, res) => {
+  const users = await UserVector.find();
+
+  const totalUsers = users.length;
+  const guestUsers = users.filter(u => u.type === "guest").length;
+  const returningUsers = users.filter(u => u.type === "returning").length;
+
+  const avgDwellTime =
+    users.reduce((s, u) => s + u.behavioral.dwellTime, 0) /
+    (totalUsers || 1);
+
+  const avgScrollDepth =
+    users.reduce((s, u) => s + u.behavioral.scrollDepth, 0) /
+    (totalUsers || 1);
+
+  res.json({
+    totalUsers,
+    guestUsers,
+    returningUsers,
+    avgDwellTime: Math.round(avgDwellTime),
+    avgScrollDepth: Math.round(avgScrollDepth)
+  });
+});
+
+
 
 module.exports = router;

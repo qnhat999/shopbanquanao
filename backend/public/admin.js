@@ -9,6 +9,7 @@ const PRODUCT_API = "/api/admin/products";
 const ORDER_API = "/api/admin/orders";
 const ANALYTICS_API = "/api/admin/analytics";
 
+
 /* ================== ELEMENT ================== */
 const productForm = document.getElementById("productForm");
 
@@ -42,6 +43,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   await loadProducts();
   await loadOrders();
   await loadAnalytics();
+  await loadUserVectorAnalytics();
 
   productForm.addEventListener("submit", submitProduct);
 });
@@ -169,27 +171,23 @@ async function loadAnalytics() {
   }
 
   /* ====== AVG VIEW TIME ====== */
-  if (avgViewTime && Array.isArray(data.avgTime) && data.avgTime.length > 0) {
-    const avg =
-      data.avgTime.reduce((s, i) => s + i.avgTime, 0) /
-      data.avgTime.length;
-    avgViewTime.innerText = avg.toFixed(1) + "s";
-  } else if (avgViewTime) {
-    avgViewTime.innerText = "0s";
-  }
-
-  
- /* ====== VIEW BEHAVIOR ====== */
-if (data.viewBehavior) {
-  repeatOnce.innerText = data.viewBehavior.quick || 0;
-  repeatUser.innerText =
-    (data.viewBehavior.normal || 0) +
-    (data.viewBehavior.deep || 0);
-} else {
-  repeatOnce.innerText = 0;
-  repeatUser.innerText = 0;
+if (avgViewTime && typeof data.avgViewTime === "number") {
+  avgViewTime.innerText = data.avgViewTime.toFixed(1) + "s";
+} else if (avgViewTime) {
+  avgViewTime.innerText = "0s";
 }
 
+
+  /* ====== VIEW BEHAVIOR ====== */
+  if (data.viewBehavior) {
+    repeatOnce.innerText = data.viewBehavior.quick || 0;
+    repeatUser.innerText =
+      (data.viewBehavior.normal || 0) +
+      (data.viewBehavior.deep || 0);
+  } else {
+    repeatOnce.innerText = 0;
+    repeatUser.innerText = 0;
+  }
 
   /* ====== SENTIMENT ====== */
   positiveCount.innerText = 0;
@@ -202,7 +200,7 @@ if (data.viewBehavior) {
     });
   }
 
-  /* ====== CHART ====== */
+  /* ====== SENTIMENT CHART ====== */
   const canvas = document.getElementById("sentimentChart");
   if (!canvas) return;
 
@@ -220,25 +218,41 @@ if (data.viewBehavior) {
       }]
     }
   });
+
   /* ====== TIME VIEW CHART ====== */
-const timeCanvas = document.getElementById("timeChart");
+ const timeCanvas = document.getElementById("timeChart");
 
-if (timeCanvas && Array.isArray(data.avgTime)) {
-  const labels = data.avgTime.map(i => i.product.name);
-  const values = data.avgTime.map(i => i.avgTime);
-
+if (timeCanvas) {
   new Chart(timeCanvas, {
     type: "bar",
     data: {
-      labels,
+      labels: ["Thời gian xem trung bình"],
       datasets: [{
         label: "Thời gian xem (giây)",
-        data: values
+        data: [data.avgViewTime || 0]
       }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
     }
   });
 }
+}
+async function loadUserVectorAnalytics() {
+  const res = await fetch("/api/admin/analytics/users");
+  const data = await res.json();
 
+  document.getElementById("totalUsers").innerText = data.totalUsers || 0;
+  document.getElementById("guestUsers").innerText = data.guestUsers || 0;
+  document.getElementById("returningUsers").innerText = data.returningUsers || 0;
+  document.getElementById("avgDwellTime").innerText =
+    (data.avgDwellTime || 0) + " giây";
+  document.getElementById("avgScrollDepth").innerText =
+    (data.avgScrollDepth || 0) + "%";
 }
 
 

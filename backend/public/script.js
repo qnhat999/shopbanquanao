@@ -505,6 +505,48 @@ window.submitComment = async function (productId) {
   }
 };
 
+const userId =
+  localStorage.getItem("userId") ||
+  `guest_${Date.now()}`;
+
+localStorage.setItem("userId", userId);
+
+let dwellTime = 0;
+let heartbeatCount = 0;
+let maxScroll = 0;
+
+/* Heartbeat */
+setInterval(() => {
+  heartbeatCount++;
+  dwellTime += 5;
+}, 5000);
+
+/* Scroll depth */
+window.addEventListener("scroll", () => {
+  const scrolled =
+    (window.scrollY + window.innerHeight) /
+    document.body.scrollHeight;
+  maxScroll = Math.max(maxScroll, Math.round(scrolled * 100));
+});
+
+/* Gửi dữ liệu khi rời trang */
+window.addEventListener("beforeunload", () => {
+  navigator.sendBeacon(
+    "/api/admin/analytics/track",
+    JSON.stringify({
+      userId,
+      type: "guest",
+      behavioral: {
+        dwellTime,
+        scrollDepth: maxScroll,
+        heartbeatCount
+      }
+    })
+  );
+});
+
+
+
 
 
 
