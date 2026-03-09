@@ -733,12 +733,14 @@ margin-top:20px;
 
 .camera-box{
 position:relative;
-width:500px;
+width:100%;
+max-width:500px;
+margin:auto;
 overflow:hidden;
 }
 
 video{
-width:500px;
+width:100%;
 border-radius:10px;
 display:block;
 }
@@ -750,15 +752,18 @@ object-fit:contain;
 transform-origin:center;
 cursor:move;
 user-select:none;
+touch-action:none;
 z-index:10;
 }
+
 .pants{
 position:absolute;
 display:none;
 object-fit:contain;
-z-index:8;
 cursor:move;
 user-select:none;
+touch-action:none;
+z-index:8;
 }
 
 .products{

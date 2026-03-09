@@ -253,3 +253,93 @@ if(pantsScale<0.5) pantsScale=0.5
 if(pantsScale>2) pantsScale=2
 
 })
+// ===== TOUCH DRAG MOBILE =====
+
+function getTouchPos(e){
+return {
+x: e.touches[0].clientX,
+y: e.touches[0].clientY
+}
+}
+
+shirt.addEventListener("touchstart",e=>{
+if(shirt.style.display==="none") return
+draggingItem = shirt
+const pos = getTouchPos(e)
+startX = pos.x
+startY = pos.y
+})
+
+pants.addEventListener("touchstart",e=>{
+if(pants.style.display==="none") return
+draggingItem = pants
+const pos = getTouchPos(e)
+startX = pos.x
+startY = pos.y
+})
+
+document.addEventListener("touchmove",e=>{
+
+if(!draggingItem) return
+
+const pos = getTouchPos(e)
+
+let dx = pos.x - startX
+let dy = pos.y - startY
+
+if(draggingItem === shirt){
+shirtOffsetX += dx
+shirtOffsetY += dy
+}
+
+if(draggingItem === pants){
+pantsOffsetX += dx
+pantsOffsetY += dy
+}
+
+startX = pos.x
+startY = pos.y
+
+})
+
+document.addEventListener("touchend",()=>{
+draggingItem = null
+})
+// ===== PINCH ZOOM MOBILE =====
+
+let initialDistance = null
+
+function getDistance(touches){
+const dx = touches[0].clientX - touches[1].clientX
+const dy = touches[0].clientY - touches[1].clientY
+return Math.sqrt(dx*dx + dy*dy)
+}
+
+document.addEventListener("touchmove",e=>{
+
+if(e.touches.length !== 2) return
+
+const dist = getDistance(e.touches)
+
+if(!initialDistance){
+initialDistance = dist
+return
+}
+
+let scaleChange = dist / initialDistance
+
+if(draggingItem === shirt){
+shirtScale *= scaleChange
+}
+
+if(draggingItem === pants){
+pantsScale *= scaleChange
+}
+
+initialDistance = dist
+
+})
+
+document.addEventListener("touchend",()=>{
+initialDistance = null
+})
